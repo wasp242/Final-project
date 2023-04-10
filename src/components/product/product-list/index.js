@@ -1,48 +1,49 @@
 import { useEffect, useState } from "react";
-import { searchProductByInputValue } from "../../../store/search";
+
+import { setTotal } from "../../../store/basket";
 import { fetchProduct } from "../../../store/products";
 import Product from "../product-card";
 import { useDispatch, useSelector } from "react-redux";
-import { store } from "../../../store/configure-store";
+
+import ProductSearch from "../product-search";
 
 export const ProductList = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [items, setItems] = useState([]);
+  const data = useSelector((state) => state.products.products);
+  const searchValue = useSelector((state) => state.products.searchValue);
   const dispatch = useDispatch();
-  // const products = useSelector((state) => state.products);
-  const handleSearch = (event) => {
-    setSearchQuery(event.target.value);
-    dispatch(searchProductByInputValue(event.target.value));
-  };
+  const addedItems = useSelector((state) => state.basket.items);
 
-  const handleChange = () => {};
+  fetch("https://642bc380d7081590f92918a7.mockapi.io/items")
+    .then((response) => response.json())
+    .then((data) => {
+      data.forEach((item) => {
+        item.quantity = 1;
+      });
+      dispatch(fetchProduct(data));
+    });
 
   useEffect(() => {
-    fetch("https://642bc380d7081590f92918a7.mockapi.io/items")
-      .then((response) => response.json())
-      .then((data) => {
-        dispatch(fetchProduct(data));
-        store.subscribe(handleChange);
-        console.log("Store updated:", store.getState().products);
-        const products = store.getState().products;
-        setItems(products);
-        console.log(items);
-      });
-  }, []);
+    const total = addedItems.reduce(
+      (acc, item) => acc + item.quantity * item.price,
+      0
+    );
+    dispatch(setTotal(total));
+  }, [dispatch, addedItems]);
+
+  const items = data.filter((item) => {
+    const itemName = item.name.toLowerCase();
+    return itemName.includes(searchValue.toLowerCase());
+  });
 
   return (
     <div className="content p-40 ">
-      <div className="d-flex align-center mb-40 justify-between">
-        <h1 className="">Все товары</h1>
-        <div className="search-block d-flex">
-          <img src="/img/search.svg" alt="search" />
-          <input onChange={handleSearch} placeholder="Поиск..." type="text" />
-        </div>
-      </div>
+      <ProductSearch />
       <ul className="d-flex flex-wrap">
-        {items &&
-          items.length > 0 &&
-          items.map((elem) => <Product key={elem.id} data={elem} />)}
+        {items.length > 0 ? (
+          items.map((elem) => <Product key={elem.id} data={elem} />)
+        ) : (
+          <p>Товары не найдены!</p>
+        )}
       </ul>
     </div>
   );

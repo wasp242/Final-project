@@ -1,6 +1,8 @@
 import styles from "./header.scss";
 import Menu from "./Menu";
+import { useSelector } from "react-redux";
 export default function Header(props) {
+  const total = useSelector((state) => state.basket.total);
   return (
     <header>
       <div className="d-flex justify-between align-center p-40">
@@ -14,7 +16,7 @@ export default function Header(props) {
         <ul className="d-flex ">
           <li className="mr-30 cu-p" onClick={props.onClickCart}>
             <img src="/img/cart.svg" width={18} height={18} alt="" />
-            <span>1205 rub. </span>
+            <span>{total} руб.</span>
           </li>
           <li>
             <svg

@@ -1,23 +1,15 @@
-import { useState } from "react";
 import styles from "./Product.module.scss";
 import FavoriteIcon from "./fav";
 import PlusIcon from "./plus/index";
 import CardImage from "./card-image";
 import { useDispatch } from "react-redux";
-import { addProduct, removeProductById } from "../../../store/basket";
+import { addProduct } from "../../../store/basket";
 
 export default function Product({ data, onClick }) {
   const dispatch = useDispatch();
 
-  const [isAdded, setIsAdded] = useState(false);
   const handleClick = (payload) => {
-    setIsAdded(!isAdded);
-    if (!isAdded) {
-      dispatch(addProduct(payload));
-    } else {
-      const id = payload.id;
-      dispatch(removeProductById(id));
-    }
+    dispatch(addProduct(payload));
   };
   return (
     <div className={styles.card}>
@@ -34,7 +26,6 @@ export default function Product({ data, onClick }) {
           onClick={() => {
             handleClick(data);
           }}
-          isAdded={isAdded}
         />
       </div>
     </div>

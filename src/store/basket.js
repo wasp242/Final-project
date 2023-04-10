@@ -1,40 +1,78 @@
 const ADD_PRODUCT = "ADD_PRODUCT";
 const REMOVE_PRODUCT = "REMOVE_PRODUCT";
+const INCREASE_AMOUNT = "INCREASE_AMOUNT";
+const DECREASE_AMOUNT = "DECREASE_AMOUNT";
+const SET_TOTAL = "SET_TOTAL";
 
 export const addProduct = (payload) => ({
   type: ADD_PRODUCT,
   payload,
 });
 
-export const removeProductById = (id) => ({
+export const removeProductById = (payload) => ({
   type: REMOVE_PRODUCT,
-  payload: id,
+  payload,
+});
+
+export const increaseAmount = (payload) => ({
+  type: INCREASE_AMOUNT,
+  payload,
+});
+export const decreaseAmount = (payload) => ({
+  type: INCREASE_AMOUNT,
+  payload,
+});
+export const setTotal = (payload) => ({
+  type: SET_TOTAL,
+  payload,
 });
 
 const initialState = {
   items: [],
+  total: 0,
 };
 
 export const basketReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case ADD_PRODUCT:
-      const founded = state.items.find((elem) => elem.id === payload.id);
-      if (!founded) {
+      const foundedIndex = state.items.findIndex(
+        (elem) => elem.id === payload.id
+      );
+      if (foundedIndex === -1) {
         return {
           ...state,
           items: state.items.concat(payload),
         };
+      } else {
+        const updatedItems = [...state.items];
+        updatedItems[foundedIndex].quantity += 1;
+        return {
+          ...state,
+          items: updatedItems,
+        };
       }
-      return state;
+
     case REMOVE_PRODUCT:
-      const updItems = state.items.filter(
-        (product) => product.id !== payload.id
-      );
-      console.log(state.items);
       return {
         ...state,
-        items: updItems,
+        items: payload,
       };
+    case INCREASE_AMOUNT:
+      return {
+        ...state,
+        items: payload,
+      };
+    case DECREASE_AMOUNT:
+      return {
+        ...state,
+        items: payload,
+      };
+    case SET_TOTAL:
+      return {
+        ...state,
+        total: payload,
+      };
+
     default:
       return state;
   }
