@@ -1,0 +1,47 @@
+.menu {
+  padding-left: 40px;
+  background-color: #525050;
+  ul {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    li {
+      margin-right: 20px;
+    }
+  }
+}
+.btnMenuItem {
+  height: 50px;
+  border: none;
+  color: white;
+  background-color: #525050;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  &:hover {
+    background-color: #eeeeee;
+    color: #525050;
+  }
+}
+
+.menuItem {
+  position: relative;
+}
+.dropdownMenu {
+  position: absolute;
+  width: 300px;
+  height: auto;
+  left: 0;
+  top: 100%;
+  z-index: 1;
+  background-color: #eeeeee;
+
+  p {
+    padding: 10px;
+    transition: all 0.2s ease-in-out;
+    &:hover {
+      background-color: #525050;
+      color: white;
+      cursor: pointer;
+    }
+  }
+}
