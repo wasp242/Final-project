@@ -51,15 +51,6 @@ export default function BasketItems({ cart }) {
     dispatch(decreaseAmount(updatedItems));
   };
 
-  // useEffect(() => {
-  //   const total = items.reduce(
-  //     (acc, item) => acc + item.quantity * item.price,
-  //     0
-  //   );
-  //   console.log(total);
-  //   dispatch(setTotal(total));
-  // }, [dispatch, items]);
-
   return (
     <div className="items">
       {itemsInBasket &&

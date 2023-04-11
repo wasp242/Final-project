@@ -5,7 +5,7 @@ export default function FavoriteIcon() {
   return (
     <div className={styles.favorite}>
       <img
-        src="/img/heart-liked.svg"
+        src="/img/heart-unliked.svg"
         alt="unliked"
         style={{ cursor: "pointer" }}
       />
